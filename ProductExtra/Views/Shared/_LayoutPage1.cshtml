@@ -1,0 +1,116 @@
+﻿@if (Session["userId"] == null)
+{
+    Response.Redirect("~/User/Login");
+}
+else
+{
+
+    <!doctype html>
+    <html class="no-js" lang="">
+    <head>
+
+        @Scripts.Render("~/bundles/modernizr")
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/animate.css" rel="stylesheet" />
+        <link href="~/Content/main.css" rel="stylesheet" />
+        <script src="~/Scripts/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/toastr.min.js"></script>
+        <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    </head>
+    <body id="minovate" class="appWrapper">
+        <div id="wrap" class="animsition">
+            <section id="header">
+                <header class="clearfix" style="background-color:black">
+                    <ul class="nav-left pull-left list-unstyled list-inline">
+                        <li class="sidebar-collapse divided-right">
+                            <a role="button" tabindex="0" class="collapse-sidebar">
+                                <i class="glyphicon glyphicon-align-justify" style="color:white"> </i>
+                            </a>
+                            <a href="@Url.Action("Index","User")">Product Managment</a>
+                        </li>
+
+
+                    </ul>
+                    <ul class="nav-right pull-right list-inline">
+
+                        <li class="dropdown nav profile">
+
+                            <a role="button" tabindex="0" href="#">
+                                Hello @Session["username"]
+                            </a>
+                        </li>
+                        <li class="dropdown nav profile">
+
+                            <a role="button" tabindex="0" href="@Url.Action("Logout", "User")">
+                                <i class="glyphicon glyphicon-log-out"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </header>
+
+            </section>
+            <div id="controls">
+                <aside id="sidebar">
+                    <div id="sidebar-wrap">
+
+                        <div class="panel-group slim-scroll" role="tablist">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#sidebarNav">
+                                            <span style="color:white">Menu <i class="glyphicon glyphicon-menu-down"></i></span>
+                                        </a>
+
+                                    </h4>
+                                </div>
+                                <div id="sidebarNav" class="panel-collapse collapse in" role="tabpanel">
+                                    <div class="panel-body">
+                                        <ul id="navigation" class="nav child_menu">
+                                            <li>
+                                                <a role="button" href="@Url.Action("Display", "Myproduct")"><i class="glyphicon glyphicon-list"></i> <span>Product List</span></a>
+
+                                            </li>
+                                            <li>
+                                                <a role="button" href="@Url.Action("Add", "Myproduct")"><i class="glyphicon glyphicon-plus"></i> <span>Add Product</span></a>
+
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </aside>
+            </div>
+            <section id="content">
+
+                <div class="page page-dashboard">
+
+                    <div class="pageheader">
+
+                        @RenderBody()
+
+                        <div class="page-bar">
+
+
+                        </div>
+
+                    </div>
+            </section>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+        <script src="~/Scripts/jquery.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jRespond.min.js"></script>>
+        <script src="~/Scripts/jquery.animsition.min.js"></script>
+        <script src="~/Scripts/moment.min.js"></script>
+        <script src="~/Scripts/daterangepicker.js"></script>
+        <script src="~/Scripts/main.js"></script>
+
+    </body>
+
+</html>
+}

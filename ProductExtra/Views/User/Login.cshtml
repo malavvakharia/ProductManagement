@@ -1,0 +1,126 @@
+﻿@model ProductExtra.Models.Registration
+
+@{
+    ViewBag.Title = "Login";
+}
+@{ Layout = null;
+}
+
+<html>
+<head>
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <style>
+
+        input:focus {
+            border: 3px solid #555;
+        }
+    </style>
+
+    <script>
+        function myFunction(x) {
+            x.style.border = "3px solid #555";
+        }
+        function myFunction1(x) {
+            x.style.border = "";
+        }
+    </script>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="~/Imgs/favicon.ico" />
+    <link href="~/Logincss/main.css" rel="stylesheet" />
+    <link href="~/Logincss/util.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+</head>
+<body>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @using (Html.BeginForm("Login", "User", FormMethod.Post))
+    {
+        //@Html.AntiForgeryToken()
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+                    <form class="login100-form  flex-sb flex-w">
+                        <span class="login100-form-title p-b-32">
+                            Account Login
+                        </span>
+
+                        <span class="txt1 p-b-11">
+                            @Html.LabelFor(model => model.Email)
+                        </span>
+                        <div class="wrap-input100 m-b-36">
+
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { onmouseover = "myFunction(this)", onmouseout = "myFunction1(this)", @class = "input100 glyphicon glyphicon-user", type = "text", placeholder = "Enter Email" } })
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        <span class="txt1 p-b-11">
+                            @Html.LabelFor(model => model.Password)
+                        </span>
+                        <div class="wrap-input100 m-b-12">
+
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { onmouseover = "myFunction(this)", onmouseout = "myFunction1(this)", @class = "input100", type = "password", placeholder = "Enter Password", onclick = "myFunction(this)" } })
+
+
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        <div class="flex-sb-m w-full p-b-48">
+                            <div class="contact100-form-checkbox">
+                                <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+
+                            </div>
+
+                            <div>
+                                <a href="@Url.Action("UserRegistration","User")" class="txt3">
+                                    Registration
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="container-login100-form-btn">
+                            <button class="login100-form-btn" type="submit">
+                                Login
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    }
+    <script src="~/Scripts/sweetalert.min.js"></script>
+
+    @if (ViewBag.EmailErrorMessage == true)
+    {
+        <script type="text/javascript">
+            swal({
+                title: "EmailId is not Exist",
+
+            });
+
+        </script>
+
+    }
+    @if (ViewBag.LoginErrorMessage == "xyz")
+    {
+        <script type="text/javascript">
+            swal({
+                title: "Wrong UserID and Password",
+
+            });
+
+        </script>
+
+    }
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    
+
+</body>
+</html>

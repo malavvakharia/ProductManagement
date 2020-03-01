@@ -1,0 +1,198 @@
+﻿@model IPagedList<ProductExtra.Models.Product>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Display";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+
+}
+@if (Request.Cookies.AllKeys.Contains("CookieEdit"))
+{
+    <script>
+        $(document).ready(function () {
+            toastr["success"]("Product Edited Successfully! ")
+        })
+    </script>
+}
+@if (Request.Cookies.AllKeys.Contains("CookieDelete"))
+{
+    <script>
+        $(document).ready(function () {
+            toastr["success"]("Product Deleted Successfully! ")
+        })
+    </script>
+}
+
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/javascript" href="https://cdn.jsdelivr.net/npm/sweetalert" />
+
+    <style>
+        .myactionlink {
+            color: black;
+        }
+    </style>
+
+</head>
+<!--
+<script>
+    $(document).ready(function () {
+        toastr["success"]("Product Successfully Added")
+    })
+
+</script>
+-->
+
+
+<body style="background-color:#e7eaeb;">
+
+    <h2>Display</h2>
+
+
+    <p>
+        <button class="btn btn-default" style="margin-bottom:10px"><i class="glyphicon glyphicon-plus"></i>@Html.ActionLink("Create New", "Add", "", new { @class = "myactionlink" })</button>
+    </p>
+
+
+    <p>
+        <div class="container-fluid">
+            @using (Html.BeginForm("Display", "MyProduct", FormMethod.Get))
+            {<b>Search By:</b>
+                @Html.RadioButton("SearchBy", "ProductName", new { @id = "Name" })<text>Name</text>
+                @Html.RadioButton("SearchBy", "Category", new { @id = "Category" })<text>Category</text><br />
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="text" name="search" id="search" /><input type="submit" value="search" id="btn1" />
+                    </div>
+
+                    <div class="col-md-4">
+                        @Html.TextBox("advance_search", "", new { @id = "advancesearch" }) <input type="submit" value="Advanced Search" id="btn2" />
+                    </div>
+                </div>
+            }
+        </div>
+
+    </p>
+    @using (Html.BeginForm("Deleteall", "Myproduct", FormMethod.Post))
+    {
+        <table class="table table-bordered table-hover" width="100%">
+            <tr>
+                <th>
+                    *
+                </th>
+                <th>
+                    @Html.ActionLink("Product Name", "Display", new { sortBy = ViewBag.SortNameParameter, searchBy = Request.QueryString["searchBy"], search = Request["search"] }, new { @class = "myactionlink" })
+                    @*Html.DisplayNameFor(model => model.First().ProductName)*@
+                </th>
+                <th>
+                    @Html.ActionLink("Category", "Display", new { sortBy = ViewBag.SortCategoryParameter, searchBy = Request.QueryString["searchBy"], search = Request["search"] }, new { @class = "myactionlink" })
+                    @*Html.DisplayNameFor(model => model.First().Category)*@
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ShortDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().SmallImage)
+                </th>
+                <th colspan="2">
+                    <center>Action</center>
+                </th>
+            </tr>
+            @if (Model.Count() == 0)
+            {
+                <tr>
+                    <td colspan="10">No Search Row Match Criteria</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="id" value="@item.ProductId" id="multiple" required />
+                        </td>
+                        <td>
+                            <a href="Details/@item.ProductId" style="color:black">@item.ProductName</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ShortDescription)
+                        </td>
+                        <td>
+                            <img src="@Url.Content(item.SmallImage)" height="100" width="100" />
+                        </td>
+                        <td>
+                            <center>@Html.ActionLink("Edit", "Edit", new { id = item.ProductId }, new { @class = "glyphicon glyphicon-edit myactionlink " })</center>
+                        </td>
+                        
+                        <td>
+                            <center>@Html.ActionLink("Delete", "Delete", new { id = item.ProductId }, new { @class = "glyphicon glyphicon-erase myactionlink", onclick = "return confirm('Are you sure you want to Delete?');" })</center>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <br />
+        <center><button type="submit" class="btn myactionlink" id="multipleDel"><i class="glyphicon glyphicon-trash"></i> Selected Record</button></center>
+        @Html.PagedListPager(Model, i => Url.Action("Display", new { i, SearchBy = Request.QueryString["SearchBy"], search = Request.QueryString["search"], sortBy = Request["sortBy"] }),
+        new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, DisplayItemSliceAndTotal = true })
+    }
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script>
+        $("#search").keyup(function () {
+            if ($("#search").val().length > 0) {
+                $("#advancesearch").attr('readonly', 'readonly');
+                $('#Name').attr('required', 'required');
+                $('#Category').attr('required', 'required');
+                $("#btn1").removeAttr('disabled');
+            }
+            else {
+                $('#advancesearch').removeAttr('readonly');
+                $("#btn1").attr('disabled', 'disabled');
+                $('#Name').removeAttr('required');
+                $('#Category').removeAttr('required');
+            }
+        });
+        $("#multiple").click(function () {
+            document.getElementById('multipleDel').disabled = false;
+        });
+        $("#advancesearch").keyup(function () {
+            if ($("#advancesearch").val().length > 0) {
+                $("#search").attr('readonly', 'readonly');
+                $('#Name').removeAttr('required');
+                $('#Category').removeAttr('required');
+                $("#btn2").removeAttr('disabled');
+            }
+            else {
+                $('#search').removeAttr('readonly');
+                $('#Name').attr('required', 'required');
+                $('#Category').attr('required', 'required');
+                $("#btn2").attr('disabled', 'disabled');
+            }
+        });
+        function disabledbutton() {
+            document.getElementById('btn1').disabled = true;
+            document.getElementById('btn2').disabled = true;
+        }
+        window.onload = disabledbutton();
+    </script>
+</body>
+</html>

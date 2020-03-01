@@ -1,0 +1,30 @@
+﻿textarea{
+    height:100%;
+    width:100%;
+    border:1px solid #ccc;
+    border-radius:4px;
+    position:relative;
+    background:#fff;
+}
+.search_categories {
+    font-size: 13px;
+    padding: 10px 8px 10px 14px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow:hidden;
+    position:relative;
+}
+.link
+{
+    background-color:whitesmoke;
+    border-radius:4px;
+    color:black;
+    padding:10px 25px;
+    text-align:center;
+    text-decoration:none;
+    display:inline-block;
+}
+a{
+    text-decoration:none;
+}
